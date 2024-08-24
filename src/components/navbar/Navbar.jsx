@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 const Navbar = () => {
 
   const [active,setActive] = useState(false);
+  const [open,setOpen] = useState(false);
   
   const isActive = ()=>{
     window.scrollY > 0 ? setActive(true) : setActive(false)
@@ -16,7 +17,14 @@ const Navbar = () => {
     return ()=>{
       window.removeEventListener("scroll",isActive);
     }
-  }, [])
+  }, []);
+
+  const currentUser = {
+    id:1,
+    username:"John Doe",
+    isSeller:true,
+
+  }
   
 
 
@@ -34,8 +42,27 @@ const Navbar = () => {
           <span>Explore</span>
           <span>English</span>
           <span>Sign in</span>
-          <span>Become a Seller</span>
-          <button>Join</button>
+          { !currentUser?.isSellwe && <span>Become a Seller</span>}
+          {!currentUser && <button>Join</button>}
+          { currentUser && (
+            <div className="user" onClick={()=>setOpen(!open)}>
+              <img src="" alt="" />
+              <span>{currentUser?.username}</span>
+              {open && <div className="options">
+                {
+                  currentUser?.isSeller && (
+                    <>
+                    <span>Gigs</span>
+                    <span>Add New Gig</span>
+                    </>
+                  )}
+                  <span>Orders</span>
+                  <span>Messages</span>
+                  <span>Logout</span>
+              </div>}
+            </div>
+          )
+          }
         </div>
       </div>
       {active && (
